@@ -3,203 +3,85 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta http-equiv="refresh" content="3600">
-<title>Market Data · 2026-03-08 18:03:36</title>
+<title>Market Data · 2026-03-08 18:05:40</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+KR:wght@400;500;600&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans+KR:wght@400;600&display=swap');
   :root {
     --bg:#080c10; --card:#111720; --border:#1e2836;
     --up:#00e676; --down:#ff3d57; --warn:#ffb300;
-    --accent:#00b4d8; --btc:#f7931a; --sol:#9945ff;
-    --text:#e2eaf4; --muted:#7a8a9a;
+    --accent:#00b4d8; --text:#e2eaf4; --muted:#7a8a9a;
     --mono:'IBM Plex Mono',monospace; --sans:'IBM Plex Sans KR',sans-serif;
   }
   *{box-sizing:border-box;margin:0;padding:0}
-  body{background:var(--bg);color:var(--text);font-family:var(--sans);padding:16px}
-  body::before{content:'';position:fixed;inset:0;
-    background-image:linear-gradient(rgba(0,180,216,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(0,180,216,.025) 1px,transparent 1px);
-    background-size:40px 40px;pointer-events:none;z-index:0}
-  .wrap{position:relative;z-index:1;max-width:920px;margin:0 auto}
-  .header{display:flex;justify-content:space-between;align-items:center;padding:12px 0 18px;border-bottom:1px solid var(--border);margin-bottom:20px}
-  .header-left{display:flex;align-items:center;gap:10px}
-  .dot{width:8px;height:8px;border-radius:50%;background:var(--up);box-shadow:0 0 8px var(--up);animation:pulse 2s infinite}
-  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
-  .htitle{font-family:var(--mono);font-size:.85rem;color:var(--accent);letter-spacing:2px;text-transform:uppercase}
-  .htime{font-family:var(--mono);font-size:.78rem;color:var(--muted)}
-  .slabel{font-family:var(--mono);font-size:.75rem;color:var(--accent);letter-spacing:3px;text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;gap:10px}
-  .slabel::after{content:'';flex:1;height:1px;background:var(--border)}
-  .fg-box{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:18px 20px;margin-bottom:20px;display:grid;grid-template-columns:repeat(3,1fr)}
-  .fg-item{text-align:center;padding:6px 12px;position:relative}
-  .fg-item:not(:last-child)::after{content:'';position:absolute;right:0;top:8%;bottom:8%;width:1px;background:var(--border)}
-  .fg-lbl{font-family:var(--mono);font-size:.73rem;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:10px;font-weight:500}
-  .fg-val{font-family:var(--mono);font-size:2.2rem;font-weight:600;line-height:1;margin-bottom:5px}
-  .fg-txt{font-size:.75rem;font-weight:500}
-  .g4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:10px}
-  .g3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:10px}
-  .g2{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:20px}
-  @media(max-width:700px){.g4,.g3{grid-template-columns:repeat(2,1fr)}.g2,.fg-box{grid-template-columns:1fr}}
-  .card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:14px 16px;position:relative;overflow:hidden;animation:fi .4s ease forwards;opacity:0}
-  .card::after{content:'';position:absolute;top:0;left:0;right:0;height:2px}
-  .card.u::after{background:var(--up)}.card.d::after{background:var(--down)}.card.w::after{background:var(--warn)}
-  .clbl{font-family:var(--mono);font-size:.75rem;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px;font-weight:500}
-  .cval{font-family:var(--mono);font-size:1.4rem;font-weight:600;line-height:1;margin-bottom:6px}
-  .cchg{font-family:var(--mono);font-size:.78rem;font-weight:500}
-  .csub{font-family:var(--mono);font-size:.7rem;color:var(--muted);margin-top:5px}
-  .vix-bar{margin-top:8px;height:4px;border-radius:2px;background:linear-gradient(to right,var(--up),var(--warn),var(--down));position:relative}
-  .vix-mk{position:absolute;top:-4px;width:12px;height:12px;background:white;border-radius:50%;transform:translateX(-50%);box-shadow:0 0 5px rgba(255,255,255,.6)}
-  .vix-lbl{display:flex;justify-content:space-between;margin-top:5px;font-family:var(--mono);font-size:.65rem}
-  .cc{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:18px;position:relative;overflow:hidden;animation:fi .4s ease forwards;opacity:0}
-  .cc::after{content:'';position:absolute;top:0;left:0;right:0;height:2px}
-  .cc.btc::after{background:var(--btc)}.cc.sol::after{background:var(--sol)}
-  .cc-hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
-  .cc-nm{font-family:var(--mono);font-size:.78rem;color:var(--muted);letter-spacing:2px;text-transform:uppercase;font-weight:500}
-  .badge{font-family:var(--mono);font-size:.68rem;padding:3px 10px;border-radius:3px;font-weight:600;letter-spacing:1px}
-  .btc-b{background:rgba(247,147,26,.15);color:var(--btc);border:1px solid rgba(247,147,26,.3)}
-  .sol-b{background:rgba(153,69,255,.15);color:var(--sol);border:1px solid rgba(153,69,255,.3)}
-  .cc-price{font-family:var(--mono);font-size:1.65rem;font-weight:600;margin-bottom:5px}
-  .cc-usd{font-family:var(--mono);font-size:.82rem;color:var(--muted);margin-bottom:14px}
-  .cc-meta{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;border-top:1px solid var(--border);padding-top:12px}
-  .ml{font-family:var(--mono);font-size:.67rem;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;font-weight:500}
-  .mv{font-family:var(--mono);font-size:.85rem;font-weight:600}
-  .ubar{display:flex;justify-content:space-between;align-items:center;padding:12px 0 4px;border-top:1px solid var(--border);margin-top:4px}
-  .utxt{font-family:var(--mono);font-size:.68rem;color:var(--muted)}
-  .unxt{font-family:var(--mono);font-size:.68rem;color:var(--accent)}
-  @keyframes fi{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-  .fg-box{animation:fi .3s ease forwards;opacity:0;animation-delay:.05s}
-  .d1{animation-delay:.10s}.d2{animation-delay:.15s}.d3{animation-delay:.20s}.d4{animation-delay:.25s}
-  .d5{animation-delay:.30s}.d6{animation-delay:.35s}.d7{animation-delay:.40s}
-  .d8{animation-delay:.45s}.d9{animation-delay:.50s}
+  body{background:var(--bg);color:var(--text);font-family:var(--sans);padding:16px;line-height:1.5}
+  .wrap{max-width:920px;margin:0 auto}
+  .header{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--border);margin-bottom:20px}
+  .dot{width:8px;height:8px;border-radius:50%;background:var(--up);box-shadow:0 0 8px var(--up);display:inline-block;margin-right:8px}
+  .fg-box{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:20px;margin-bottom:20px;display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+  .fg-item{text-align:center;border-right:1px solid var(--border)}
+  .fg-item:last-child{border-right:none}
+  .fg-val{font-family:var(--mono);font-size:2.2rem;font-weight:600}
+  .g4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px}
+  .card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:14px;position:relative}
+  .card::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--muted)}
+  .card.u::after{background:var(--up)} .card.d::after{background:var(--down)}
+  .clbl{font-family:var(--mono);font-size:.7rem;color:var(--muted);text-transform:uppercase;margin-bottom:8px}
+  .cval{font-family:var(--mono);font-size:1.3rem;font-weight:600}
+  .cchg{font-family:var(--mono);font-size:.8rem;font-weight:500}
+  @media(max-width:700px){.g4,.fg-box{grid-template-columns:1fr}.fg-item{border-right:none;border-bottom:1px solid var(--border);padding:10px}}
 </style>
 </head>
 <body>
 <div class="wrap">
-
   <div class="header">
-    <div class="header-left"><div class="dot"></div><div class="htitle">Market Data</div></div>
-    <div class="htime">2026-03-08 · 18:03 KST</div>
+    <div><span class="dot"></span><strong>MARKET DASHBOARD</strong></div>
+    <div style="font-family:var(--mono);font-size:.8rem;color:var(--muted)">2026-03-08 18:05:40 KST</div>
   </div>
 
-  <!-- 공포탐욕 -->
-  <div class="slabel">Fear &amp; Greed</div>
   <div class="fg-box">
     <div class="fg-item">
-      <div class="fg-lbl">CNN Fear &amp; Greed</div>
-      <div class="fg-val" style="color:#ffb300">27</div>
-      <div class="fg-txt" style="color:#ffb300">Fear</div>
+      <div class="clbl">CNN Fear &amp; Greed</div>
+      <div class="fg-val" style="color:#7a8a9a">N/A</div>
+      <div style="font-size:.8rem;color:#7a8a9a">데이터 점검</div>
     </div>
     <div class="fg-item">
-      <div class="fg-lbl">Crypto Fear &amp; Greed</div>
+      <div class="clbl">Crypto Fear &amp; Greed</div>
       <div class="fg-val" style="color:#ff3d57">12</div>
-      <div class="fg-txt" style="color:#ff3d57">Extreme Fear</div>
+      <div style="font-size:.8rem;color:#ff3d57">Extreme Fear</div>
     </div>
     <div class="fg-item">
-      <div class="fg-lbl">전일 Crypto F&amp;G</div>
+      <div class="clbl">Prev. Crypto F&amp;G</div>
       <div class="fg-val" style="color:#ff3d57">12</div>
-      <div class="fg-txt" style="color:#ff3d57">전일</div>
+      <div style="font-size:.8rem;color:var(--muted)">Yesterday</div>
     </div>
   </div>
 
-  <!-- 글로벌 지수 -->
-  <div class="slabel">Global Indices</div>
-  <div class="g4" style="margin-bottom:20px">
-    <div class="card d d1">
+  <div class="g4">
+    <div class="card d">
       <div class="clbl">S&amp;P 500</div>
       <div class="cval" style="color:#ff3d57">6,740.02</div>
       <div class="cchg" style="color:#ff3d57">▼ -1.33%</div>
-      <div class="csub">전일 6,830.71</div>
     </div>
-    <div class="card d d2">
+    <div class="card d">
       <div class="clbl">NASDAQ 100</div>
       <div class="cval" style="color:#ff3d57">24,643.02</div>
       <div class="cchg" style="color:#ff3d57">▼ -1.51%</div>
-      <div class="csub">전일 25,020.41</div>
     </div>
-    <div class="card w d3">
-      <div class="clbl">VIX</div>
+    <div class="card d">
+      <div class="clbl">VIX Index</div>
       <div class="cval" style="color:#ff3d57">29.49</div>
       <div class="cchg" style="color:#ff3d57">▲ 24.17%</div>
-      <div class="vix-bar"><div class="vix-mk" style="left:58.98%"></div></div>
-      <div class="vix-lbl"><span style="color:var(--up)">안정</span><span style="color:var(--warn)">경계</span><span style="color:var(--down)">위험</span></div>
     </div>
-    <div class="card u d4">
-      <div class="clbl">KOSPI</div>
-      <div class="cval" style="color:#00e676">5,584.87</div>
-      <div class="cchg" style="color:#00e676">▲ 0.02%</div>
-      <div class="csub">전일 5,583.9</div>
-    </div>
-  </div>
-
-  <!-- 매크로 -->
-  <div class="slabel">Macro</div>
-  <div class="g4" style="margin-bottom:20px">
-    <div class="card u d5">
-      <div class="clbl">Gold</div>
-      <div class="cval" style="color:#00e676">$5,158.7</div>
-      <div class="cchg" style="color:#00e676">▲ 1.84%</div>
-      <div class="csub">전일 $5,065.3</div>
-    </div>
-    <div class="card u d6">
-      <div class="clbl">WTI Crude</div>
-      <div class="cval" style="color:#00e676">$90.9</div>
-      <div class="cchg" style="color:#00e676">▲ 12.21%</div>
-      <div class="csub">전일 $81.01</div>
-    </div>
-    <div class="card u d7">
+    <div class="card d">
       <div class="clbl">USD / KRW</div>
       <div class="cval" style="color:#ff3d57">1,482.6</div>
       <div class="cchg" style="color:#ff3d57">▲ 0.21%</div>
-      <div class="csub">전일 1,479.51</div>
-    </div>
-    <div class="card u d8">
-      <div class="clbl">10Y Treasury</div>
-      <div class="cval" style="color:#00e676">4.13%</div>
-      <div class="cchg" style="color:#00e676">▼ -0.48%</div>
-      <div class="csub">전일 4.15%</div>
     </div>
   </div>
 
-  <!-- 크립토 -->
-  <div class="slabel">Crypto</div>
-  <div class="g2">
-    <div class="cc btc d8">
-      <div class="cc-hd">
-        <div class="cc-nm">Bitcoin</div>
-        <div class="badge btc-b">BTC</div>
-      </div>
-      <div class="cc-price" style="color:var(--btc)">₩100,242,234</div>
-      <div class="cc-usd">≈ $67,612.0 &nbsp;·&nbsp; <span style="color:#ff3d57">▼ -0.43%</span></div>
-      <div class="cc-meta">
-        <div><div class="ml">24h 고점</div><div class="mv" style="color:var(--up)">₩101.0M</div></div>
-        <div><div class="ml">24h 저점</div><div class="mv" style="color:var(--down)">₩99.0M</div></div>
-        <div><div class="ml">ATH 대비</div><div class="mv" style="color:var(--down)">-43.6%</div></div>
-        <div><div class="ml">7일 고점</div><div class="mv" style="color:var(--btc)">₩106.2M</div></div>
-        <div><div class="ml">전월比</div><div class="mv" style="color:#00e676">▲ 5.39%</div></div>
-        <div><div class="ml">도미넌스</div><div class="mv" style="color:var(--btc)">56.6%</div></div>
-      </div>
-    </div>
-    <div class="cc sol d9">
-      <div class="cc-hd">
-        <div class="cc-nm">Solana</div>
-        <div class="badge sol-b">SOL</div>
-      </div>
-      <div class="cc-price" style="color:var(--sol)">₩123,252</div>
-      <div class="cc-usd">≈ $83.0 &nbsp;·&nbsp; <span style="color:#ff3d57">▼ -1.58%</span></div>
-      <div class="cc-meta">
-        <div><div class="ml">24h 고점</div><div class="mv" style="color:var(--up)">₩125,641</div></div>
-        <div><div class="ml">24h 저점</div><div class="mv" style="color:var(--down)">₩121,774</div></div>
-        <div><div class="ml">ATH 대비</div><div class="mv" style="color:var(--down)">-71.2%</div></div>
-        <div><div class="ml">7일 고점</div><div class="mv" style="color:var(--sol)">₩133,097</div></div>
-        <div><div class="ml">전월比</div><div class="mv" style="color:#00e676">▲ 6.3%</div></div>
-        <div><div class="ml">7일比</div><div class="mv" style="color:#00e676">▲ 0.41%</div></div>
-      </div>
-    </div>
+  <div style="text-align:right;font-size:.7rem;color:var(--muted);font-family:var(--mono);border-top:1px solid var(--border);padding-top:10px">
+    NEXT UPDATE: 19:00 KST
   </div>
-
-  <div class="ubar">
-    <div class="utxt">⏱ 최종 업데이트: 2026-03-08 18:03:36 KST</div>
-    <div class="unxt">다음 업데이트 → 19:00</div>
-  </div>
-
 </div>
 </body>
 </html>
