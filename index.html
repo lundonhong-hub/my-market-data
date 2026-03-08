@@ -3,13 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Market Data · 2026-03-08 18:05:40</title>
+<title>Market Dashboard · 2026-03-08 18:09:44</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans+KR:wght@400;600&display=swap');
   :root {
     --bg:#080c10; --card:#111720; --border:#1e2836;
     --up:#00e676; --down:#ff3d57; --warn:#ffb300;
     --accent:#00b4d8; --text:#e2eaf4; --muted:#7a8a9a;
+    --btc:#f7931a; --sol:#9945ff;
     --mono:'IBM Plex Mono',monospace; --sans:'IBM Plex Sans KR',sans-serif;
   }
   *{box-sizing:border-box;margin:0;padding:0}
@@ -28,6 +29,8 @@
   .clbl{font-family:var(--mono);font-size:.7rem;color:var(--muted);text-transform:uppercase;margin-bottom:8px}
   .cval{font-family:var(--mono);font-size:1.3rem;font-weight:600}
   .cchg{font-family:var(--mono);font-size:.8rem;font-weight:500}
+  .cc{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:18px;margin-bottom:10px}
+  .cc-meta{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;border-top:1px solid var(--border);padding-top:12px;margin-top:10px}
   @media(max-width:700px){.g4,.fg-box{grid-template-columns:1fr}.fg-item{border-right:none;border-bottom:1px solid var(--border);padding:10px}}
 </style>
 </head>
@@ -35,14 +38,14 @@
 <div class="wrap">
   <div class="header">
     <div><span class="dot"></span><strong>MARKET DASHBOARD</strong></div>
-    <div style="font-family:var(--mono);font-size:.8rem;color:var(--muted)">2026-03-08 18:05:40 KST</div>
+    <div style="font-family:var(--mono);font-size:.8rem;color:var(--muted)">2026-03-08 18:09:44 KST</div>
   </div>
 
   <div class="fg-box">
     <div class="fg-item">
       <div class="clbl">CNN Fear &amp; Greed</div>
       <div class="fg-val" style="color:#7a8a9a">N/A</div>
-      <div style="font-size:.8rem;color:#7a8a9a">데이터 점검</div>
+      <div style="font-size:.8rem;color:#7a8a9a">점검 중</div>
     </div>
     <div class="fg-item">
       <div class="clbl">Crypto Fear &amp; Greed</div>
@@ -76,6 +79,18 @@
       <div class="clbl">USD / KRW</div>
       <div class="cval" style="color:#ff3d57">1,482.6</div>
       <div class="cchg" style="color:#ff3d57">▲ 0.21%</div>
+    </div>
+  </div>
+
+  <div class="cc" style="border-left:4px solid var(--btc)">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+        <strong style="color:var(--btc)">BITCOIN (BTC)</strong>
+        <span style="font-family:var(--mono);color:#ff3d57">₩100,282,339 (▼ -0.25%)</span>
+    </div>
+    <div class="cc-meta">
+        <div><div class="clbl">7일 고점</div><div style="font-family:var(--mono)">₩106.2M</div></div>
+        <div><div class="clbl">도미넌스</div><div style="font-family:var(--mono)">56.6%</div></div>
+        <div><div class="clbl">ATH 대비</div><div style="font-family:var(--mono);color:var(--down)">-43.6%</div></div>
     </div>
   </div>
 
