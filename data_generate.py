@@ -104,7 +104,11 @@ try:
         if coin["id"] == "bitcoin": btc = data
         elif coin["id"] == "solana": sol = data
 
-    # 글로벌 데이터 (도미넌스)
+    # 7일 고점 추가 수집 (비트코인)
+    r2 = requests.get("https://api.coingecko.com/api/v3/coins/bitcoin/market_chart", params={"vs_currency": "krw", "days": "7", "interval": "daily"}, timeout=10)
+    btc["high_7d"] = int(max([p[1] for p in r2.json().get("prices", [])])) if r2.status_code == 200 else btc.get("krw")
+
+    # 도미넌스 수집
     r_global = requests.get("https://api.coingecko.com/api/v3/global", timeout=10)
     btc_dominance = round(r_global.json()["data"]["market_cap_percentage"]["btc"], 1)
 except Exception as e:
@@ -113,7 +117,7 @@ except Exception as e:
 # ── 4. 공포탐욕지수 (CNN 미러 API 적용) ──────────────────────
 print("😨 공포탐욕지수 수집 중...")
 # 1) CNN Fear & Greed (미러 API 활용)
-fg_cnn_value, fg_cnn_label = "N/A", "데이터 점검"
+fg_cnn_value, fg_cnn_label = "N/A", "점검 중"
 try:
     r_cnn = requests.get("https://api.viewer.xyz/fng", timeout=15)
     if r_cnn.status_code == 200:
@@ -136,11 +140,10 @@ except: pass
 # ── 5. HTML 생성 ──────────────────────────────────────
 print("🖥️ HTML 생성 중...")
 
-# 변수 매핑
+# 시장 변수 정리
 sp_v, sp_c = sp500.get("close", "N/A"), sp500.get("change_pct", "N/A")
 nq_v, nq_c = nasdaq.get("close", "N/A"), nasdaq.get("change_pct", "N/A")
 vx_v, vx_c = vix.get("close", "N/A"), vix.get("change_pct", "N/A")
-ks_v, ks_c = kospi.get("close", "N/A"), kospi.get("change_pct", "N/A")
 fx_v, fx_c = usdkrw.get("close", "N/A"), usdkrw.get("change_pct", "N/A")
 
 html = f"""<!DOCTYPE html>
@@ -148,13 +151,14 @@ html = f"""<!DOCTYPE html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Market Data · {update_time}</title>
+<title>Market Dashboard · {update_time}</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans+KR:wght@400;600&display=swap');
   :root {{
     --bg:#080c10; --card:#111720; --border:#1e2836;
     --up:#00e676; --down:#ff3d57; --warn:#ffb300;
     --accent:#00b4d8; --text:#e2eaf4; --muted:#7a8a9a;
+    --btc:#f7931a; --sol:#9945ff;
     --mono:'IBM Plex Mono',monospace; --sans:'IBM Plex Sans KR',sans-serif;
   }}
   *{{box-sizing:border-box;margin:0;padding:0}}
@@ -173,6 +177,8 @@ html = f"""<!DOCTYPE html>
   .clbl{{font-family:var(--mono);font-size:.7rem;color:var(--muted);text-transform:uppercase;margin-bottom:8px}}
   .cval{{font-family:var(--mono);font-size:1.3rem;font-weight:600}}
   .cchg{{font-family:var(--mono);font-size:.8rem;font-weight:500}}
+  .cc{{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:18px;margin-bottom:10px}}
+  .cc-meta{{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;border-top:1px solid var(--border);padding-top:12px;margin-top:10px}}
   @media(max-width:700px){{.g4,.fg-box{{grid-template-columns:1fr}}.fg-item{{border-right:none;border-bottom:1px solid var(--border);padding:10px}}}}
 </style>
 </head>
@@ -202,12 +208,12 @@ html = f"""<!DOCTYPE html>
   </div>
 
   <div class="g4">
-    <div class="card {'u' if str(sp_c).startswith('+') or (isinstance(sp_c, float) and sp_c > 0) else 'd'}">
+    <div class="card {'u' if (isinstance(sp_c, float) and sp_c > 0) else 'd'}">
       <div class="clbl">S&amp;P 500</div>
       <div class="cval" style="color:{color(sp_c)}">{sp_v:,}</div>
       <div class="cchg" style="color:{color(sp_c)}">{arrow(sp_c)} {sp_c}%</div>
     </div>
-    <div class="card {'u' if str(nq_c).startswith('+') or (isinstance(nq_c, float) and nq_c > 0) else 'd'}">
+    <div class="card {'u' if (isinstance(nq_c, float) and nq_c > 0) else 'd'}">
       <div class="clbl">NASDAQ 100</div>
       <div class="cval" style="color:{color(nq_c)}">{nq_v:,}</div>
       <div class="cchg" style="color:{color(nq_c)}">{arrow(nq_c)} {nq_c}%</div>
@@ -221,6 +227,18 @@ html = f"""<!DOCTYPE html>
       <div class="clbl">USD / KRW</div>
       <div class="cval" style="color:{color(fx_c, invert=True)}">{fx_v:,}</div>
       <div class="cchg" style="color:{color(fx_c, invert=True)}">{arrow(fx_c)} {fx_c}%</div>
+    </div>
+  </div>
+
+  <div class="cc" style="border-left:4px solid var(--btc)">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+        <strong style="color:var(--btc)">BITCOIN (BTC)</strong>
+        <span style="font-family:var(--mono);color:{color(btc.get('change_24h'))}">₩{btc.get('krw',0):,} ({arrow(btc.get('change_24h'))} {btc.get('change_24h') or 0}%)</span>
+    </div>
+    <div class="cc-meta">
+        <div><div class="clbl">7일 고점</div><div style="font-family:var(--mono)">{fmt_krw(btc.get('high_7d'))}</div></div>
+        <div><div class="clbl">도미넌스</div><div style="font-family:var(--mono)">{btc_dominance}%</div></div>
+        <div><div class="clbl">ATH 대비</div><div style="font-family:var(--mono);color:var(--down)">{btc.get('ath_change') or 0}%</div></div>
     </div>
   </div>
 
