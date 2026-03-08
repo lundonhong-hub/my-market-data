@@ -123,7 +123,23 @@ try:
     fg_crypto_prev  = int(data[1]["value"]) if len(data) > 1 else fg_crypto_value
     print(f"  ✅ 크립토 F&G: {fg_crypto_value} ({fg_crypto_label})")
 except Exception as e:
-    print(f"  ⚠️ F&G 오류: {e}")
+    print(f"  ⚠️ 크립토 F&G 오류: {e}")
+
+# CNN 공포탐욕지수
+fg_cnn_value = "N/A"
+fg_cnn_label = ""
+try:
+    headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"}
+    r = requests.get(
+        "https://production.dataviz.cnn.io/index/fearandgreed/graphdata",
+        headers=headers, timeout=10
+    )
+    cnn_data = r.json()
+    fg_cnn_value = int(round(cnn_data["fear_and_greed"]["score"]))
+    fg_cnn_label = cnn_data["fear_and_greed"]["rating"].replace("_", " ").title()
+    print(f"  ✅ CNN F&G: {fg_cnn_value} ({fg_cnn_label})")
+except Exception as e:
+    print(f"  ⚠️ CNN F&G 오류: {e}")
 
 # ── 4. 헬퍼 함수 ──────────────────────────────────────
 def fmt_krw(v):
@@ -285,8 +301,8 @@ html = f"""<!DOCTYPE html>
   <div class="fg-box">
     <div class="fg-item">
       <div class="fg-lbl">CNN Fear &amp; Greed</div>
-      <div class="fg-val" style="color:#7a8a9a">N/A</div>
-      <div class="fg-txt" style="color:#7a8a9a">웹검색 필요</div>
+      <div class="fg-val" style="color:{fg_color(fg_cnn_value)}">{fg_cnn_value}</div>
+      <div class="fg-txt" style="color:{fg_color(fg_cnn_value)}">{fg_cnn_label}</div>
     </div>
     <div class="fg-item">
       <div class="fg-lbl">Crypto Fear &amp; Greed</div>
